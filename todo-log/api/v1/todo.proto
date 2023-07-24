@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "module github.com/lathief/simple-grpc-go/todo-log/api_v1";
+
+service Todo_Log {
+  rpc Insert(Todo) returns (Response) {}
+  rpc Retrieve(RetrieveRequest) returns (Todo) {}
+  rpc List(ListRequest) returns (Activities) {}
+  rpc Update(Todo) returns (Activities) {}
+}
+
+message RetrieveRequest {
+  int32 id = 1;
+}
+
+message Response {
+  int32 id = 1;
+  string title = 3;
+  string description = 4;
+  StatusType status = 5;
+}
+
+message ListRequest {
+  int32 offset = 1;
+}
+enum StatusType {
+  PHONE_TYPE_TODO = 0;
+  PHONE_TYPE_DOING = 1;
+  PHONE_TYPE_DONE = 2;
+}
+message Todo {
+  int32 id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  string title = 3;
+  string description = 4;
+  StatusType status = 5;
+}
+
+message Activities {
+  repeated Todo todos = 1;
+}
+
+message TodoQuery {
+  int32 offset = 1;
+}
